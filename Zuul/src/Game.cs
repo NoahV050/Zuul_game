@@ -22,12 +22,17 @@ class Game
 		Room pub = new Room("in the campus pub");
 		Room lab = new Room("in a computing lab");
 		Room office = new Room("in the computing admin office");
+		Room attic = new Room("in a dusty attic");
+		Room cellar = new Room("in a dark cellar");
 
 		// Initialise room exits
 		outside.AddExit("east", theatre);
 		outside.AddExit("south", lab);
 		outside.AddExit("west", pub);
-
+		outside.AddExit("up", attic);
+		outside.AddExit("down", cellar);
+		attic.AddExit("down", outside);
+		cellar.AddExit("up", outside);
 		theatre.AddExit("west", outside);
 
 		pub.AddExit("east", outside);
@@ -104,7 +109,6 @@ class Game
 				break;
 			case "up":
 		}
-
 		return wantToQuit;
 	}
 
