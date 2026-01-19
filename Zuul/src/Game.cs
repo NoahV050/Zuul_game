@@ -107,7 +107,6 @@ class Game
 			case "quit":
 				wantToQuit = true;
 				break;
-			case "up":
 		}
 		return wantToQuit;
 	}
