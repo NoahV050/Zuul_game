@@ -45,9 +45,14 @@ class Game
 		office.AddExit("west", lab);
 
 		// Create your Items here
-		// ...
-		// And add them to the Rooms
-		// ...
+		Item key = new Item(5, "a golden key");
+		Item book = new Item(3, "a mysterious book");
+		Item lamp = new Item(10, "a desk lamp");
+
+		// Add items to the Rooms
+		lab.AddItem(key);
+		theatre.AddItem(book);
+		office.AddItem(lamp);
 
 		// Start game outside
 		player.CurrentRoom = outside;
@@ -63,8 +68,17 @@ class Game
 		bool finished = false;
 		while (!finished)
 		{
-			Command command = parser.GetCommand();
-			finished = ProcessCommand(command);
+			// Check if player is still alive
+			if (!player.IsAlive())
+			{
+				Console.WriteLine("You are dead! Game Over.");
+				finished = true;
+			}
+			else
+			{
+				Command command = parser.GetCommand();
+				finished = ProcessCommand(command);
+			}
 		}
 		Console.WriteLine("Thank you for playing.");
 		Console.WriteLine("Press [Enter] to continue.");
@@ -75,7 +89,7 @@ class Game
 	private void PrintWelcome()
 	{
 		Console.WriteLine();
-		Console.WriteLine("Welcome to Zuul!");
+		Console.WriteLine("Welcome to Zuul!");										
 		Console.WriteLine("Zuul is a new, incredibly boring adventure game.");
 		Console.WriteLine("Type 'help' if you need help.");
 		Console.WriteLine();
@@ -105,6 +119,9 @@ class Game
 				break;
 			case "look":
 				Console.WriteLine(player.CurrentRoom.GetLongDescription());
+				break;
+			case "status":
+				Console.WriteLine(player.GetHealth());
 				break;
 			case "quit":
 				wantToQuit = true;
@@ -157,6 +174,16 @@ private void PrintLook()
 		}
 
 		player.CurrentRoom = nextRoom;
+		player.Damage(10);
+		Console.WriteLine("You take damage! " + player.GetHealth());
 		Console.WriteLine(player.CurrentRoom.GetLongDescription());
+		
+		// Check if player reached the office (winning condition)
+		string roomDesc = player.CurrentRoom.GetShortDescription();
+		if (roomDesc == "in the computing admin office")
+		{
+			Console.WriteLine("You reached the office! You win!");
+		}
 	}
-}
+	}
+

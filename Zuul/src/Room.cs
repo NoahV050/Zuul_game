@@ -5,6 +5,7 @@ class Room
 	// Private fields
 	private string description;
 	private Dictionary<string, Room> exits; // stores exits of this room.
+	private List<Item> items; // stores items in this room.
 
 	// Create a room described "description". Initially, it has no exits.
 	// "description" is something like "in a kitchen" or "in a court yard".
@@ -12,6 +13,7 @@ class Room
 	{
 		description = desc;
 		exits = new Dictionary<string, Room>();
+		items = new List<Item>();
 	}
 
 	// Define an exit for this room.
@@ -56,6 +58,27 @@ class Room
 		string str = "Exits: ";
 		str += String.Join(", ", exits.Keys);
 
+		return str;
+	}
+
+	// Add an item to the room.
+	public void AddItem(Item item)
+	{
+		items.Add(item);
+	}
+
+	// Return items in the room as a string.
+	public string GetItemsString()
+	{
+		if (items.Count == 0)
+		{
+			return "No items here.";
+		}
+		string str = "Items: ";
+		foreach (Item item in items)
+		{
+			str += item.Description + " ";
+		}
 		return str;
 	}
 }
