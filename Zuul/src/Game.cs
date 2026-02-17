@@ -122,6 +122,20 @@ class Game
 				break;
 			case "status":
 				Console.WriteLine(player.GetHealth());
+				Console.WriteLine("\nBackpack:");
+				Console.WriteLine(player.GetInventory().Show());
+				break;
+			case "take":
+				Take(command);
+				break;
+			case "drop":
+				Drop(command);
+				break;
+			case "inventory":
+				Console.WriteLine(player.GetInventory().GetItems());
+				break;
+			case "use":
+				UseItem(command);
 				break;
 			case "quit":
 				wantToQuit = true;
@@ -134,26 +148,24 @@ class Game
 	// implementations of user commands:
 	// ######################################
 	
-	// Print out some help information.
-	// Here we print the mission and a list of the command words.
+	// Geef hulp informatie
 	private void PrintHelp()
 	{
-		Console.WriteLine("You are lost. You are alone.");
-		Console.WriteLine("You wander around at the university.");
+		Console.WriteLine("Je bent verdwaald. Je bent alleen.");
+		Console.WriteLine("Je loopt rond op de universiteit.");
 		Console.WriteLine();
-		// let the parser print the commands
+		Console.WriteLine("Beschikbare commando's:");
+		// Laat de parser de commando's zien
 		parser.PrintValidCommands();
 	}
 
-private void PrintLook()
+	private void PrintLook()
 	{
 	
 	}
 
 
 
-	// Try to go to one direction. If there is an exit, enter the new
-	// room, otherwise print an error message.
 	private void GoRoom(Command command)
 	{
 		if(!command.HasSecondWord())
@@ -184,6 +196,96 @@ private void PrintLook()
 		{
 			Console.WriteLine("You reached the office! You win!");
 		}
+	}
+
+	// Pak een item uit de kamer en doe het in je inventaris
+	private void Take(Command command)
+	{
+		// Controleer of je hebt gezegd welk item je wilt pakken
+		if(!command.HasSecondWord())
+		{
+			Console.WriteLine("Pak wat?");
+			return;
+		}
+
+		// Haal de naam van het item
+		string itemName = command.SecondWord;
+		
+		// Vraag de kamer of het item daar ligt
+		Item item = player.CurrentRoom.GetItem(itemName);
+
+		// Als het item niet bestaat, zeg het tegen de speler
+		if (item == null)
+		{
+			Console.WriteLine("Dat item is hier niet!");
+			return;
+		}
+
+		// Probeer het item in je inventaris te doen
+		if (player.GetInventory().Put(itemName, item))
+		{
+			 // Wat die gepakt heeft en hoeveel ruimte er nog vrij is
+			Console.WriteLine("Je hebt gepakt: " + itemName);
+			Console.WriteLine("Nog " + player.GetInventory().FreeWeight() + " kilo vrij.");
+		}
+		else
+		{
+			// Inventaris is vol! Doe het item terug in de kamer
+			player.CurrentRoom.AddItem(item);
+			Console.WriteLine("Je kunt dat niet dragen! Je rugzak is vol.");
+			Console.WriteLine("Nog " + player.GetInventory().FreeWeight() + " kilo vrij.");
+		}
+	}
+
+	// Laat een item uit je inventaris vallen
+	private void Drop(Command command)
+	{
+		// Controleer of je hebt gezegd welk item je wilt droppen
+		if(!command.HasSecondWord())
+		{
+			Console.WriteLine("Laat wat vallen?");
+			return;
+		}
+
+		// Haal de naam van het item
+		string itemName = command.SecondWord;
+		
+		// Vraag je inventaris of je dit item hebt
+		Item item = player.GetInventory().Get(itemName);
+
+		// Als je het item niet hebt, zeg het tegen de speler
+		if (item == null)
+		{
+			Console.WriteLine("Je hebt dat niet!");
+			return;
+		}
+
+		// Voeg het item toe aan de kamer
+		player.CurrentRoom.AddItem(item);
+		
+		// Zeg tegen de speler dat het gelukt is
+		Console.WriteLine("Je hebt laten vallen: " + itemName);
+		Console.WriteLine("Nog " + player.GetInventory().FreeWeight() + " kilo vrij.");
+	}
+
+	// Gebruik een item uit je inventory
+	private void UseItem(Command command)
+	{
+		// Controleer of je hebt gezegd welk item je wilt gebruiken
+		if(!command.HasSecondWord())
+		{
+			Console.WriteLine("Gebruik wat?");
+			return;
+		}
+
+		// Haal de naam van het item
+		string itemName = command.SecondWord;
+		
+		// Vraag de player om het item te gebruiken
+		string result = player.Use(itemName);
+		
+		// Zeg het resultaat tegen de speler
+		Console.WriteLine(result);
 	}
 	}
 
