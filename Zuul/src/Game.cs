@@ -3,7 +3,7 @@ using System;
 
 class Game
 {
-    // Private fields
+    // Privé velden
     private Parser parser;
     private Player player; 
 
@@ -15,10 +15,10 @@ class Game
         CreateRooms();
     }
 
-	// Initialise the Rooms
+	// Initialiseer de kamers
 	private void CreateRooms()
 	{
-		// Create the rooms
+		// Maak de kamers
 		Room outside = new Room("outside the main entrance of the university");
 		Room theatre = new Room("in a lecture theatre");
 		Room pub = new Room("in the campus pub");
@@ -27,7 +27,7 @@ class Game
 		Room attic = new Room("in a dusty attic");
 		Room cellar = new Room("in a dark cellar");
 
-		// Initialise room exits
+		// Initialiseer de uitgangen
 		outside.AddExit("east", theatre);
 		outside.AddExit("south", lab);
 		outside.AddExit("west", pub);
@@ -44,31 +44,31 @@ class Game
 
 		office.AddExit("west", lab);
 
-		// Create your Items here
+		// Maak hier je items
 		Item key = new Item(5, "a golden key");
 		Item book = new Item(3, "a mysterious book");
 		Item lamp = new Item(10, "a desk lamp");
 
-		// Add items to the Rooms
+		// Voeg items toe aan de kamers
 		lab.AddItem(key);
 		theatre.AddItem(book);
 		office.AddItem(lamp);
 
-		// Start game outside
+		// Begin het spel buiten
 		player.CurrentRoom = outside;
 	}
 
-	//  Main play routine. Loops until end of play.
+	// Hoofd speelroutine. Loopt tot het einde van het spel.
 	public void Play()
 	{
 		PrintWelcome();
 
-		// Enter the main command loop. Here we repeatedly read commands and
-		// execute them until the player wants to quit.
+		// Voer de hoofd commando loop in.
+		// Voer ze uit totdat de speler wil stoppen.
 		bool finished = false;
 		while (!finished)
 		{
-			// Check if player is still alive
+			// Controleer of de speler nog in leven is
 			if (!player.IsAlive())
 			{
 				Console.WriteLine("You are dead! Game Over.");
@@ -85,7 +85,7 @@ class Game
 		Console.ReadLine();
 	}
 
-	// Print out the opening message for the player.
+	// Print het openingsbericht voor de speler.
 	private void PrintWelcome()
 	{
 		Console.WriteLine();
@@ -96,8 +96,8 @@ class Game
 		Console.WriteLine(player.CurrentRoom.GetLongDescription()); 
 	}
 
-	// Given a command, process (that is: execute) the command.
-	// If this command ends the game, it returns true.
+	// Gegeven een commando, verwerk het commando.
+	// Als dit commando het spel beëindigt, geeft het true terug.
 	// Otherwise false is returned.
 	private bool ProcessCommand(Command command)
 	{
@@ -143,10 +143,6 @@ class Game
 		}
 		return wantToQuit;
 	}
-
-	// ######################################
-	// implementations of user commands:
-	// ######################################
 	
 	// Geef hulp informatie
 	private void PrintHelp()
@@ -170,14 +166,14 @@ class Game
 	{
 		if(!command.HasSecondWord())
 		{
-			// if there is no second word, we don't know where to go...
+			// als er geen tweede woord is, weten we niet waar we heen moeten...
 			Console.WriteLine("Go where?");
 			return;
 		}
 
 		string direction = command.SecondWord;
 
-		// Try to go to the next room.
+		// Probeer naar de volgende kamer te gaan.
 		Room nextRoom = player.CurrentRoom.GetExit(direction);
 		if (nextRoom == null)
 		{
@@ -190,7 +186,7 @@ class Game
 		Console.WriteLine("You take damage! " + player.GetHealth());
 		Console.WriteLine(player.CurrentRoom.GetLongDescription());
 		
-		// Check if player reached the office (winning condition)
+		// Controleer of speler het kantoor heeft bereikt (winvoorwaarde)
 		string roomDesc = player.CurrentRoom.GetShortDescription();
 		if (roomDesc == "in the computing admin office")
 		{

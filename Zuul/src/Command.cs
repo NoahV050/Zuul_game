@@ -4,8 +4,8 @@ class Command
 	public string SecondWord { get; init; }
 	public string ThirdWord { get; init; }
 	
-	// Create a command object. First, second, and third word must be supplied, but
-	// either one (or all) can be null. See Parser.GetCommand()
+	// Maak een command object. Eerste, tweede en derde woord moeten geleverd worden, maar
+	// een ervan (of alle) kunnen null zijn. Zie Parser.GetCommand()
 	public Command(string first, string second, string third)
 	{
 		CommandWord = first;
@@ -14,20 +14,20 @@ class Command
 	}
 
 	
-	// Return true if this command was not understood.
+	// Geef true terug als dit commando niet begrepen was.
 	public bool IsUnknown()
 	{
 		return CommandWord == null;
 	}
 
 	
-	// Return true if the command has a second word.
+	// Geef true terug als het commando een tweede woord heeft.
 	public bool HasSecondWord()
 	{
 		return SecondWord != null;
 	}
 
-	// Return true if the command has a third word.
+	// Geef true terug als het commando een derde woord heeft.
 	public bool HasThirdWord()
 	{
 		return ThirdWord != null;

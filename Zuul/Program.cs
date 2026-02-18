@@ -2,7 +2,7 @@ class Program
 {
 	public static void Main(string[] args)
 	{
-		// Create and play the Game.
+		// Maak en speel het spel.
 		Game game = new Game();
 		game.Play();
 	}

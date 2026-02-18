@@ -2,10 +2,10 @@ using System.Collections.Generic;
 
 class CommandLibrary
 {
-	// A List that holds all valid command words
+	// Een Lijst die alle geldige commando woorden bevat
 	private readonly List<string> validCommands;
 
-	// Constructor - initialise the command words.
+	// Constructor - initialiseer de commando woorden.
 	public CommandLibrary()
 	{
 		validCommands = new List<string>();
@@ -23,14 +23,14 @@ class CommandLibrary
 		validCommands.Add("use");
 	}
 
-	// Check whether a given string is a valid command word.
-	// Return true if it is, false if it isn't.
+	// Controleer of een gegeven string een geldig commando woord is.
+	// Geef true terug als het is, false als het niet is.
 	public bool IsValidCommandWord(string instring)
 	{
 		return validCommands.Contains(instring);
 	}
 
-	// returns a list of valid command words as a comma separated string.
+	// Geeft een lijst van geldige commando woorden terug als een komma-gescheiden string.
 	public string GetCommandsString()
 	{
 		return String.Join(", ", validCommands);
